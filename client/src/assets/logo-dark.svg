@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 215 40" fill="none">
+  <defs>
+    <linearGradient id="chip-grad-dark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366F1" />
+      <stop offset="100%" stop-color="#3B82F6" />
+    </linearGradient>
+  </defs>
+
+  <!-- Smaller Refined Semiconductor Chip Icon -->
+  <g transform="translate(2, 7) scale(0.72)">
+    <!-- Top Pins -->
+    <line x1="12" y1="0" x2="12" y2="4" stroke="#6366F1" stroke-width="2.2" stroke-linecap="round" />
+    <line x1="18" y1="0" x2="18" y2="4" stroke="#6366F1" stroke-width="2.2" stroke-linecap="round" />
+    <line x1="24" y1="0" x2="24" y2="4" stroke="#6366F1" stroke-width="2.2" stroke-linecap="round" />
+
+    <!-- Bottom Pins -->
+    <line x1="12" y1="32" x2="12" y2="36" stroke="#6366F1" stroke-width="2.2" stroke-linecap="round" />
+    <line x1="18" y1="32" x2="18" y2="36" stroke="#6366F1" stroke-width="2.2" stroke-linecap="round" />
+    <line x1="24" y1="32" x2="24" y2="36" stroke="#6366F1" stroke-width="2.2" stroke-linecap="round" />
+
+    <!-- Left Pins -->
+    <line x1="0" y1="12" x2="4" y2="12" stroke="#6366F1" stroke-width="2.2" stroke-linecap="round" />
+    <line x1="0" y1="18" x2="4" y2="18" stroke="#6366F1" stroke-width="2.2" stroke-linecap="round" />
+    <line x1="0" y1="24" x2="4" y2="24" stroke="#6366F1" stroke-width="2.2" stroke-linecap="round" />
+
+    <!-- Right Pins -->
+    <line x1="32" y1="12" x2="36" y2="12" stroke="#6366F1" stroke-width="2.2" stroke-linecap="round" />
+    <line x1="32" y1="18" x2="36" y2="18" stroke="#6366F1" stroke-width="2.2" stroke-linecap="round" />
+    <line x1="32" y1="24" x2="36" y2="24" stroke="#6366F1" stroke-width="2.2" stroke-linecap="round" />
+
+    <!-- Chip Main Body -->
+    <rect x="4" y="4" width="28" height="28" rx="6" fill="#12141D" stroke="url(#chip-grad-dark)" stroke-width="1.8" />
+
+    <!-- Silicon Die Center -->
+    <rect x="10" y="10" width="16" height="16" rx="3" fill="#6366F1" fill-opacity="0.25" stroke="#6366F1" stroke-width="1.2" />
+    
+    <!-- Pin 1 Index Dot -->
+    <circle cx="8" cy="8" r="1.4" fill="#818CF8" />
+
+    <!-- Internal Microchip Logic Paths -->
+    <path d="M14 18H22M18 14V22" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" />
+  </g>
+
+  <!-- Bigger, Bolder Typography: Tech Curious -->
+  <text x="36" y="27" font-family="'Plus Jakarta Sans', 'Inter', sans-serif" font-weight="800" font-size="22" fill="#FFFFFF" letter-spacing="-0.5">TECH</text>
+  <text x="102" y="27" font-family="'Plus Jakarta Sans', 'Inter', sans-serif" font-weight="800" font-size="22" fill="#6366F1" letter-spacing="-0.5">CURIOUS</text>
+</svg>

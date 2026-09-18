@@ -1,0 +1,30 @@
+{
+  "rewrites": [
+    {
+      "source": "/((?!assets/).*)",
+      "destination": "/index.html"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/youtube",
+      "destination": "https://www.youtube.com/@TechCuriousYT",
+      "permanent": false
+    },
+    {
+      "source": "/yt",
+      "destination": "https://www.youtube.com/@TechCuriousYT",
+      "permanent": false
+    },
+    {
+      "source": "/instagram",
+      "destination": "https://www.instagram.com/techcuriouss?stkn=b3l6a3QyaWp1OXBp",
+      "permanent": false
+    },
+    {
+      "source": "/insta",
+      "destination": "https://www.instagram.com/techcuriouss?stkn=b3l6a3QyaWp1OXBp",
+      "permanent": false
+    }
+  ]
+}

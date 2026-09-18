@@ -1,0 +1,14 @@
+{
+  "name": "Tech Curious",
+  "short_name": "TechCurious",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ],
+  "theme_color": "#090A0F",
+  "background_color": "#090A0F",
+  "display": "standalone"
+}

@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tech-curious-app
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+      - MONGO_URI=mongodb://mongo:27017/tech-curious
+      - JWT_SECRET=your_super_secret_production_key_change_me_12345
+      - ADMIN_EMAIL=admin@techcurious.com
+      - CLIENT_URL=http://localhost:5000
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:7-jammy
+    container_name: tech-curious-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:

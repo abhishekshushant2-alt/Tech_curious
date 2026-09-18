@@ -1,0 +1,17 @@
+{
+  "name": "tech-curious-monorepo",
+  "version": "1.0.0",
+  "description": "Tech Curious - Electronics, Robotics, IoT Portfolio & CMS",
+  "scripts": {
+    "dev": "concurrently \"npm --prefix server run dev\" \"npm --prefix client run dev\"",
+    "dev:server": "npm --prefix server run dev",
+    "dev:client": "npm --prefix client run dev",
+    "build": "npm --prefix client run build && npm --prefix server run build",
+    "start": "node server/dist/server.js",
+    "install:all": "npm --prefix server install && npm --prefix client install",
+    "test:api": "node test-e2e.js"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

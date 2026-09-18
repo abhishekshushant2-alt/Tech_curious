@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <clipPath id="fav-clip">
+      <rect width="48" height="48" rx="10" fill="#000000" />
+    </clipPath>
+  </defs>
+  <rect width="48" height="48" rx="10" fill="#000000" />
+  <image href="/brand-logo.jpg" width="48" height="48" preserveAspectRatio="xMidYMid slice" clip-path="url(#fav-clip)" />
+</svg>
