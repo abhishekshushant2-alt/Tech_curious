@@ -20,7 +20,7 @@ import { errorHandler } from './middleware/errorHandler.js';
 const app = express();
 const PORT = process.env.PORT || 5000;
 const allowedOrigins = process.env.CLIENT_URL
-  ? process.env.CLIENT_URL.split(',').map((u) => u.trim())
+  ? process.env.CLIENT_URL.split(',').map((u: string) => u.trim())
   : ['http://localhost:5173'];
 
 // Trust first proxy (Render, Railway, Heroku, Nginx, AWS, Vercel)
@@ -35,7 +35,7 @@ app.use(
 
 app.use(
   cors({
-    origin: (origin, callback) => {
+    origin: (origin: any, callback: any) => {
       // Allow requests with no origin (curl, mobile, server-to-server) or matching allowed origins
       if (
         !origin ||
@@ -62,16 +62,16 @@ const YOUTUBE_URL = 'https://www.youtube.com/@TechCuriousYT';
 const INSTAGRAM_URL = 'https://www.instagram.com/techcuriouss?stkn=b3l6a3QyaWp1OXBp';
 
 // Direct Social Redirects
-app.get(['/youtube', '/yt'], (_req, res) => {
+app.get(['/youtube', '/yt'], (_req: any, res: any) => {
   res.redirect(YOUTUBE_URL);
 });
 
-app.get(['/instagram', '/insta'], (_req, res) => {
+app.get(['/instagram', '/insta'], (_req: any, res: any) => {
   res.redirect(INSTAGRAM_URL);
 });
 
 // API Routes
-app.get('/api/health', (_req, res) => {
+app.get('/api/health', (_req: any, res: any) => {
   res.status(200).json({ status: 'ok', service: 'Tech Curious API', timestamp: new Date() });
 });
 
@@ -85,11 +85,11 @@ app.use('/api/contact', contactRoutes);
 const clientDistPath = path.resolve(process.cwd(), '../client/dist');
 app.use(express.static(clientDistPath));
 
-app.get('*', (req, res, next) => {
+app.get('*', (req: any, res: any, next: any) => {
   if (req.path.startsWith('/api')) {
     return next();
   }
-  res.sendFile(path.join(clientDistPath, 'index.html'), (err) => {
+  res.sendFile(path.join(clientDistPath, 'index.html'), (err: any) => {
     if (err) {
       if (req.path === '/') {
         res.status(200).json({

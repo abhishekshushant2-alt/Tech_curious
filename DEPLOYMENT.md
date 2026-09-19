@@ -49,7 +49,7 @@ Deploy the backend first so you have the Render API URL to supply to the fronten
    - **Branch:** `main` (or your working branch)
    - **Root Directory:** `server`
    - **Runtime:** `Node`
-   - **Build Command:** `npm install && npm run build`
+   - **Build Command:** `npm install --include=dev && npm run build`
    - **Start Command:** `node dist/server.js`
    - **Instance Type:** `Free` (or higher)
 5. Scroll down to **Environment Variables** and add:

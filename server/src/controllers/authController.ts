@@ -11,7 +11,7 @@ const getAdminEmails = (): string[] => {
   const configured = process.env.ADMIN_EMAIL || 'admin@techcurious.com';
   return configured
     .split(',')
-    .map((e) => e.trim().toLowerCase())
+    .map((e: string) => e.trim().toLowerCase())
     .filter(Boolean);
 };
 

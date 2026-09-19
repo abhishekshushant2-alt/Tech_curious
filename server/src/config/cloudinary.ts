@@ -39,7 +39,7 @@ export const uploadToCloudinary = async (
       }
     );
 
-    uploadStream.end(buffer);
+    (uploadStream as any).end(buffer);
   });
 };
 
