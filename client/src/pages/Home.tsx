@@ -136,7 +136,7 @@ export const Home: React.FC = () => {
             </div>
             <div className="p-4 rounded-2xl bg-white/70 dark:bg-dark-surface/70 border border-black/[0.06] dark:border-white/[0.07] backdrop-blur-md">
               <div className="text-2xl sm:text-3xl font-display font-extrabold text-slate-950 dark:text-white">
-                ROS2
+                ESP32 S3
               </div>
               <div className="text-xs text-slate-500 dark:text-zinc-400 mt-0.5 font-medium">SLAM Stacks</div>
             </div>
