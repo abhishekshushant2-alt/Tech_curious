@@ -60,9 +60,12 @@ Deploy the backend first so you have the Render API URL to supply to the fronten
 | `PORT` | `5000` (or leave empty) | Render automatically injects `PORT` |
 | `JWT_SECRET` | *(Generate a 32+ char random string)* | Used for admin session authentication |
 | `ADMIN_EMAIL` | `your-email@example.com` | Authorized admin email for OTP access |
+| `CONTACT_RECEIVER_EMAIL` | `your-email@example.com` | Email address where Contact Us form messages are sent |
+| `RESEND_API_KEY` | `re_xxxxxxxxxxxx` | Resend API key for OTP and Contact Form emails |
+| `RESEND_FROM_EMAIL` | `Tech Curious <onboarding@resend.dev>` | From address (use onboarding@resend.dev or verified custom domain) |
 | `CLIENT_URL` | `https://<your-project>.vercel.app` | Vercel production frontend URL |
 | `MONGO_URI` | `mongodb+srv://...` *(Optional)* | If omitted, uses built-in in-memory store |
-| `GMAIL_USER` | `your-gmail@gmail.com` *(Optional)* | For email OTP dispatch (see below) |
+| `GMAIL_USER` | `your-gmail@gmail.com` *(Optional)* | For Gmail fallback if Resend is omitted |
 | `GMAIL_APP_PASSWORD` | *(16-char App Password)* *(Optional)* | Generated in Google Account Security |
 | `CLOUDINARY_CLOUD_NAME` | *(Optional)* | For persistent custom thumbnail uploads |
 | `CLOUDINARY_API_KEY` | *(Optional)* | Cloudinary API key |

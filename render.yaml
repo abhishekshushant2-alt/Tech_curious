@@ -15,6 +15,12 @@ services:
         generateValue: true
       - key: ADMIN_EMAIL
         value: admin@techcurious.com
+      - key: CONTACT_RECEIVER_EMAIL
+        value: admin@techcurious.com
+      - key: RESEND_API_KEY
+        sync: false
+      - key: RESEND_FROM_EMAIL
+        value: Tech Curious <onboarding@resend.dev>
       - key: CLIENT_URL
         sync: false
       - key: MONGO_URI

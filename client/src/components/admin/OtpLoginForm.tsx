@@ -89,7 +89,7 @@ export const OtpLoginForm: React.FC = () => {
           Tech <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-500 to-indigo-500 dark:from-brand-400 dark:to-cyan-400">Curious</span> Admin Gateway
         </h2>
         <p className="text-xs text-slate-500 dark:text-zinc-400">
-          Hardware creator CMS authentication via Gmail OTP.
+          Hardware creator CMS authentication via Resend OTP.
         </p>
       </div>
 
