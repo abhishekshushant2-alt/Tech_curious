@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   Search,
   Sun,
@@ -19,12 +19,36 @@ export const Navbar: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
   const { admin } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [location.pathname]);
+
+  // Smooth scroll to contact if hash matches
+  useEffect(() => {
+    if (location.hash === '#contact') {
+      const el = document.getElementById('contact');
+      if (el) {
+        setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 120);
+      }
+    }
+  }, [location]);
+
+  const handleContactClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (location.pathname === '/') {
+      const el = document.getElementById('contact');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      navigate('/#contact');
+    }
+    setIsMobileMenuOpen(false);
+  };
 
   // Keyboard shortcut Ctrl+K / Cmd+K
   useEffect(() => {
@@ -72,7 +96,8 @@ export const Navbar: React.FC = () => {
                 );
               })}
               <a
-                href="#contact"
+                href="/#contact"
+                onClick={handleContactClick}
                 className="px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-all"
               >
                 Contact
@@ -172,8 +197,8 @@ export const Navbar: React.FC = () => {
                 Tutorials & Case Studies
               </Link>
               <a
-                href="#contact"
-                onClick={() => setIsMobileMenuOpen(false)}
+                href="/#contact"
+                onClick={handleContactClick}
                 className="block px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-zinc-200 hover:bg-black/5 dark:hover:bg-white/5"
               >
                 Contact & Inquiries

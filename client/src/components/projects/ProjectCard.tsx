@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Eye, Heart, ArrowUpRight, Cpu } from 'lucide-react';
 import { Project, Category } from '../../lib/types';
@@ -8,7 +8,13 @@ interface ProjectCardProps {
   project: Project;
 }
 
+const FALLBACK_CIRCUIT_SVG =
+  "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='340' viewBox='0 0 600 340'><rect width='600' height='340' fill='%230b0f19'/><path d='M50,170 H250 V100 H400 V220 H550' stroke='%2300f2fe' stroke-width='2' fill='none' opacity='0.4'/><circle cx='250' cy='100' r='6' fill='%2300f2fe'/><circle cx='400' cy='220' r='6' fill='%2310b981'/><rect x='240' y='140' width='120' height='60' rx='8' fill='%23131b2e' stroke='%2300f2fe' stroke-width='1.5'/><text x='300' y='175' fill='%23ffffff' font-family='sans-serif' font-weight='bold' font-size='12' text-anchor='middle'>TECH CURIOUS</text></svg>";
+
 export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
+  const [imgSrc, setImgSrc] = useState(project.thumbnailImage || FALLBACK_CIRCUIT_SVG);
+  const [imgLoaded, setImgLoaded] = useState(false);
+
   const categoryName =
     typeof project.category === 'object' && project.category !== null
       ? (project.category as Category).name
@@ -16,13 +22,23 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
 
   return (
     <article className="group relative flex flex-col rounded-2xl bg-white dark:bg-dark-surface border border-black/[0.06] dark:border-white/[0.07] hover:border-brand-500/40 dark:hover:border-brand-500/40 card-hover-glow overflow-hidden">
-      {/* Thumbnail Container */}
+      {/* Thumbnail Container with Skeleton & Fallback */}
       <div className="relative aspect-video w-full overflow-hidden bg-slate-100 dark:bg-dark-elevated">
+        {!imgLoaded && (
+          <div className="absolute inset-0 bg-slate-200 dark:bg-dark-elevated animate-pulse" />
+        )}
         <img
-          src={project.thumbnailImage}
+          src={imgSrc}
           alt={project.title}
           loading="lazy"
-          className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+          onLoad={() => setImgLoaded(true)}
+          onError={() => {
+            setImgSrc(FALLBACK_CIRCUIT_SVG);
+            setImgLoaded(true);
+          }}
+          className={`h-full w-full object-cover object-center transition-all duration-500 group-hover:scale-105 ${
+            imgLoaded ? 'opacity-100' : 'opacity-0'
+          }`}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-50 group-hover:opacity-30 transition-opacity" />
 

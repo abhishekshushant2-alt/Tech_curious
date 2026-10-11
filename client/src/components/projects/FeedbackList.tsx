@@ -44,11 +44,10 @@ export const FeedbackList: React.FC<FeedbackListProps> = ({ feedbackList }) => {
                 {[1, 2, 3, 4, 5].map((star) => (
                   <Star
                     key={star}
-                    className={`w-3.5 h-3.5 ${
-                      star <= (item.rating || 0)
+                    className={`w-3.5 h-3.5 ${star <= (item.rating || 0)
                         ? 'text-amber-400 fill-amber-400'
                         : 'text-slate-300 dark:text-slate-700'
-                    }`}
+                      }`}
                   />
                 ))}
               </div>

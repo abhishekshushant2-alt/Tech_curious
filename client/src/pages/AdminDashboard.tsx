@@ -7,6 +7,7 @@ import {
   MessageSquare,
   Plus,
   RefreshCw,
+  Download,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.js';
 import api from '../lib/api.js';
@@ -91,6 +92,32 @@ export const AdminDashboard: React.FC = () => {
     }
   };
 
+  const handleExportBackup = () => {
+    const backupData = {
+      exportedAt: new Date().toISOString(),
+      platform: 'Tech Curious CMS',
+      metrics: {
+        totalProjects: projects.length,
+        totalLikes,
+        totalViews,
+        totalComments: feedbackList.length,
+      },
+      categories,
+      projects,
+      feedback: feedbackList,
+    };
+
+    const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `tech-curious-backup-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   if (authLoading) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
@@ -125,6 +152,15 @@ export const AdminDashboard: React.FC = () => {
             title="Refresh Data"
           >
             <RefreshCw className={`w-4 h-4 ${loadingData ? 'animate-spin' : ''}`} />
+          </button>
+
+          <button
+            onClick={handleExportBackup}
+            className="inline-flex items-center space-x-1.5 px-3 py-2 rounded-xl bg-slate-100 dark:bg-dark-elevated hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-zinc-200 font-semibold text-xs sm:text-sm transition-all border border-black/[0.06] dark:border-white/[0.08]"
+            title="Export full CMS data backup as JSON"
+          >
+            <Download className="w-4 h-4 text-brand-cyan" />
+            <span>Export Backup</span>
           </button>
 
           <button

@@ -1,10 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Search, ArrowUpDown, Cpu } from 'lucide-react';
+import { Search, ArrowUpDown, Cpu, Gauge, Layers, X } from 'lucide-react';
 import api from '../lib/api';
 import { Project, Category } from '../lib/types';
 import { CategoryFilter } from '../components/projects/CategoryFilter';
 import { ProjectGrid } from '../components/projects/ProjectGrid';
+
+const PLATFORMS = [
+  'All Platforms',
+  'ESP32',
+  'Nordic nRF52',
+  'ROS2 & SLAM',
+  'Raspberry Pi',
+  'Arduino',
+];
+
+const DIFFICULTIES = [
+  'All Levels',
+  'Beginner',
+  'Intermediate',
+  'Advanced',
+];
 
 export const Projects: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -16,6 +32,8 @@ export const Projects: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState(initialSearch);
   const [sortBy, setSortBy] = useState<'latest' | 'likes' | 'views'>('latest');
+  const [selectedPlatform, setSelectedPlatform] = useState('All Platforms');
+  const [selectedDifficulty, setSelectedDifficulty] = useState('All Levels');
 
   // Fetch categories
   useEffect(() => {
@@ -65,6 +83,35 @@ export const Projects: React.FC = () => {
     fetchProjects();
   }, [activeCategory, searchTerm, sortBy]);
 
+  // Filter projects by Platform & Difficulty client-side
+  const filteredProjects = useMemo(() => {
+    return projects.filter((p) => {
+      // Platform filter
+      if (selectedPlatform !== 'All Platforms') {
+        const textToMatch = `${p.title} ${p.shortDescription} ${p.fullDescription} ${(p.components || []).map((c) => c.name).join(' ')}`.toLowerCase();
+        const platQuery = selectedPlatform.toLowerCase().replace('& slam', '').trim();
+        if (!textToMatch.includes(platQuery)) {
+          return false;
+        }
+      }
+
+      // Difficulty filter
+      if (selectedDifficulty !== 'All Levels') {
+        const fullText = `${p.title} ${p.shortDescription} ${p.fullDescription}`.toLowerCase();
+        const diffLower = selectedDifficulty.toLowerCase();
+        // Check if difficulty matches description or infer by keyword
+        const matchesDiff = (p as any).difficulty?.toLowerCase() === diffLower || fullText.includes(diffLower);
+        if (!matchesDiff) {
+          // If project doesn't have an explicit difficulty field, we allow intermediate default unless advanced or beginner keywords matched
+          if (selectedDifficulty === 'Advanced' && !fullText.includes('advanced') && !fullText.includes('slam') && !fullText.includes('4-layer')) return false;
+          if (selectedDifficulty === 'Beginner' && (fullText.includes('slam') || fullText.includes('4-layer') || fullText.includes('ros2'))) return false;
+        }
+      }
+
+      return true;
+    });
+  }, [projects, selectedPlatform, selectedDifficulty]);
+
   const handleCategorySelect = (slug: string) => {
     const nextParams = new URLSearchParams(searchParams);
     if (slug) {
@@ -84,6 +131,19 @@ export const Projects: React.FC = () => {
       nextParams.delete('search');
     }
     setSearchParams(nextParams);
+  };
+
+  const hasActiveCustomFilters =
+    selectedPlatform !== 'All Platforms' ||
+    selectedDifficulty !== 'All Levels' ||
+    Boolean(activeCategory) ||
+    Boolean(searchTerm);
+
+  const resetAllFilters = () => {
+    setSelectedPlatform('All Platforms');
+    setSelectedDifficulty('All Levels');
+    setSearchTerm('');
+    setSearchParams(new URLSearchParams());
   };
 
   return (
@@ -139,10 +199,60 @@ export const Projects: React.FC = () => {
           activeSlug={activeCategory}
           onSelect={handleCategorySelect}
         />
+
+        {/* Secondary Hardware Filters: Platform & Difficulty */}
+        <div className="pt-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs border-t border-black/[0.05] dark:border-white/[0.05]">
+          <div className="flex flex-wrap items-center gap-2">
+            {/* Platform Selector */}
+            <div className="flex items-center space-x-1 px-2.5 py-1 rounded-xl bg-slate-100 dark:bg-dark-elevated text-slate-700 dark:text-zinc-300">
+              <Layers className="w-3.5 h-3.5 text-brand-cyan shrink-0" />
+              <span className="text-[11px] font-mono text-slate-400 mr-1">Platform:</span>
+              <select
+                value={selectedPlatform}
+                onChange={(e) => setSelectedPlatform(e.target.value)}
+                className="bg-transparent font-semibold focus:outline-none text-slate-900 dark:text-white cursor-pointer"
+              >
+                {PLATFORMS.map((plat) => (
+                  <option key={plat} value={plat} className="bg-white dark:bg-dark-surface text-slate-900 dark:text-white">
+                    {plat}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Difficulty Selector */}
+            <div className="flex items-center space-x-1 px-2.5 py-1 rounded-xl bg-slate-100 dark:bg-dark-elevated text-slate-700 dark:text-zinc-300">
+              <Gauge className="w-3.5 h-3.5 text-brand-mint shrink-0" />
+              <span className="text-[11px] font-mono text-slate-400 mr-1">Level:</span>
+              <select
+                value={selectedDifficulty}
+                onChange={(e) => setSelectedDifficulty(e.target.value)}
+                className="bg-transparent font-semibold focus:outline-none text-slate-900 dark:text-white cursor-pointer"
+              >
+                {DIFFICULTIES.map((diff) => (
+                  <option key={diff} value={diff} className="bg-white dark:bg-dark-surface text-slate-900 dark:text-white">
+                    {diff}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {/* Reset button if filtered */}
+          {hasActiveCustomFilters && (
+            <button
+              onClick={resetAllFilters}
+              className="inline-flex items-center space-x-1 text-xs text-rose-500 hover:text-rose-600 font-semibold transition-colors"
+            >
+              <X className="w-3.5 h-3.5" />
+              <span>Clear All Filters</span>
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Grid of Results */}
-      <ProjectGrid projects={projects} loading={loading} />
+      <ProjectGrid projects={filteredProjects} loading={loading} />
     </div>
   );
 };

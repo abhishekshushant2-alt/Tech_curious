@@ -69,11 +69,10 @@ export const FeedbackForm: React.FC<FeedbackFormProps> = ({ projectId, onFeedbac
               className="p-1 text-slate-300 hover:text-amber-400 focus:outline-none transition-colors"
             >
               <Star
-                className={`w-4 h-4 ${
-                  (hoverRating || rating) >= star
+                className={`w-4 h-4 ${(hoverRating || rating) >= star
                     ? 'text-amber-400 fill-amber-400'
                     : 'text-slate-300 dark:text-slate-700'
-                }`}
+                  }`}
               />
             </button>
           ))}

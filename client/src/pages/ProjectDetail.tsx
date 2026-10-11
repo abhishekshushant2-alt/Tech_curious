@@ -20,6 +20,7 @@ import { CodeBlock } from '../components/projects/CodeBlock';
 import { LikeButton } from '../components/projects/LikeButton';
 import { FeedbackForm } from '../components/projects/FeedbackForm';
 import { FeedbackList } from '../components/projects/FeedbackList';
+import { RichMarkdown } from '../components/projects/RichMarkdown';
 
 export const ProjectDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -29,6 +30,20 @@ export const ProjectDetail: React.FC = () => {
   const [feedbackList, setFeedbackList] = useState<Feedback[]>([]);
   const [loading, setLoading] = useState(true);
   const [copiedLink, setCopiedLink] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  // Reading progress tracker
+  useEffect(() => {
+    const handleScroll = () => {
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (totalHeight > 0) {
+        const progress = Math.min(100, Math.max(0, (window.scrollY / totalHeight) * 100));
+        setScrollProgress(progress);
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     const fetchProjectAndFeedback = async () => {
@@ -104,7 +119,16 @@ export const ProjectDetail: React.FC = () => {
   const youtubeVideoId = extractYouTubeId(project.youtubeLink);
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12 pb-24">
+    <>
+      {/* Top Ambient Reading Progress Bar */}
+      <div className="fixed top-0 left-0 right-0 h-1 z-50 bg-transparent pointer-events-none">
+        <div
+          className="h-full bg-gradient-to-r from-brand-cyan via-brand-500 to-brand-mint transition-all duration-75 ease-out shadow-sm shadow-brand-cyan/20"
+          style={{ width: `${scrollProgress}%` }}
+        />
+      </div>
+
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12 pb-24">
       {/* Back Button & Share */}
       <div className="flex items-center justify-between">
         <button
@@ -215,15 +239,13 @@ export const ProjectDetail: React.FC = () => {
         <h2 className="text-lg font-display font-bold text-slate-950 dark:text-white border-b border-black/[0.05] dark:border-white/[0.06] pb-3">
           Architecture & Engineering Specifications
         </h2>
-        <div className="text-slate-700 dark:text-zinc-300 text-sm sm:text-base leading-relaxed whitespace-pre-line font-normal">
-          {project.fullDescription}
-        </div>
+        <RichMarkdown content={project.fullDescription} />
       </div>
 
       {/* 3. Step-by-Step Process */}
       {project.steps && project.steps.length > 0 && (
         <section>
-          <StepList steps={project.steps} />
+          <StepList steps={project.steps} projectId={project._id} />
         </section>
       )}
 
@@ -260,5 +282,6 @@ export const ProjectDetail: React.FC = () => {
         <FeedbackList feedbackList={feedbackList} />
       </section>
     </div>
+    </>
   );
 };

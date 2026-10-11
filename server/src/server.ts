@@ -81,6 +81,11 @@ app.use('/api/projects', projectRoutes);
 app.use('/api/feedback', feedbackRoutes);
 app.use('/api/contact', contactRoutes);
 
+// Return structured JSON 404 for any unmatched /api/* endpoints
+app.all('/api/*', (_req: any, res: any) => {
+  res.status(404).json({ success: false, message: 'API route not found.' });
+});
+
 // In production, serve static client files if bundled together; otherwise provide API greeting
 const clientDistPath = path.resolve(process.cwd(), '../client/dist');
 app.use(express.static(clientDistPath));

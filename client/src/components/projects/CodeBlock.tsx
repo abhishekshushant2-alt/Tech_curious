@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Copy, Check, FileCode, Terminal } from 'lucide-react';
+import { Copy, Check, FileCode, Terminal, Download } from 'lucide-react';
 import { SourceCodeItem } from '../../lib/types.js';
 
 interface CodeBlockProps {
@@ -21,9 +21,22 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({ sourceCode }) => {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const handleDownload = () => {
+    if (!currentFile?.code) return;
+    const blob = new Blob([currentFile.code], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = currentFile.filename || 'source-code.txt';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="rounded-2xl bg-dark-bg border border-slate-800 shadow-2xl overflow-hidden">
-      {/* Header bar with tabs and copy action */}
+      {/* Header bar with tabs, copy action and download action */}
       <div className="flex items-center justify-between px-4 py-2.5 bg-dark-surface/90 border-b border-slate-800">
         {/* File Tabs */}
         <div className="flex items-center space-x-1.5 overflow-x-auto scrollbar-none">
@@ -44,24 +57,35 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({ sourceCode }) => {
           ))}
         </div>
 
-        {/* Copy Button */}
-        <button
-          onClick={handleCopy}
-          className="flex items-center space-x-1 px-3 py-1 rounded-lg text-xs font-mono bg-dark-elevated hover:bg-slate-800 text-slate-300 transition-all ml-2 shrink-0 border border-slate-700/50"
-          title="Copy source code"
-        >
-          {copied ? (
-            <>
-              <Check className="w-3.5 h-3.5 text-brand-mint" />
-              <span className="text-brand-mint font-medium">Copied!</span>
-            </>
-          ) : (
-            <>
-              <Copy className="w-3.5 h-3.5 text-slate-400" />
-              <span>Copy</span>
-            </>
-          )}
-        </button>
+        {/* Action Buttons: Copy & Download */}
+        <div className="flex items-center space-x-2 ml-2 shrink-0">
+          <button
+            onClick={handleDownload}
+            className="flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-xs font-mono bg-dark-elevated hover:bg-slate-800 text-slate-300 hover:text-white transition-all border border-slate-700/50"
+            title={`Download ${currentFile.filename}`}
+          >
+            <Download className="w-3.5 h-3.5 text-brand-cyan" />
+            <span className="hidden sm:inline">Download</span>
+          </button>
+
+          <button
+            onClick={handleCopy}
+            className="flex items-center space-x-1 px-3 py-1 rounded-lg text-xs font-mono bg-dark-elevated hover:bg-slate-800 text-slate-300 transition-all border border-slate-700/50"
+            title="Copy source code"
+          >
+            {copied ? (
+              <>
+                <Check className="w-3.5 h-3.5 text-brand-mint" />
+                <span className="text-brand-mint font-medium">Copied!</span>
+              </>
+            ) : (
+              <>
+                <Copy className="w-3.5 h-3.5 text-slate-400" />
+                <span>Copy</span>
+              </>
+            )}
+          </button>
+        </div>
       </div>
 
       {/* Code Viewer */}
