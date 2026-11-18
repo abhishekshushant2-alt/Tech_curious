@@ -88,9 +88,9 @@ export const Home: React.FC = () => {
 
           {/* Main Headline with Realistic High-Impact Typography */}
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-display font-extrabold tracking-tight text-slate-950 dark:text-white leading-[1.08] max-w-4xl mx-auto">
-            Turning Tech into{' '}
+            Turning Tech into {' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 via-brand-500 to-indigo-400 dark:from-brand-400 dark:via-indigo-300 dark:to-cyan-400">
-              Curiosity 🚀.
+              Curiosity.
             </span>
           </h1>
 
